@@ -1,10 +1,12 @@
-const express = require("express");
+import express from "express";
+import greetRoutes from "./routes/public/greet.js";
+
+const PORT = 8000;
 const app = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
+//ROUTES
+app.use("/greet", greetRoutes);
 
-app.listen(8000, () => {
-  console.log("listening to port 8000");
+app.listen(PORT, () => {
+  console.log(`listening to port ${PORT}`);
 });
