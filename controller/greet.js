@@ -1,3 +1,7 @@
 export const greet = (req, res) => {
-  res.send("Hello World");
+  try {
+    res.status(200).json({ data: "Hello World" });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
