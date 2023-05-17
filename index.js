@@ -1,10 +1,13 @@
 import express from "express";
+import dotenv from "dotenv";
 import greetRoutes from "./routes/public/greet.js";
 
-const PORT = 8000;
+dotenv.config();
 const app = express();
 
-//ROUTES
+const PORT = process.env.PORT;
+
+//Routes
 app.use("/greet", greetRoutes);
 
 app.listen(PORT, () => {
