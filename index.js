@@ -5,7 +5,10 @@ import greetRoutes from "./routes/public/greet.js";
 dotenv.config();
 const app = express();
 
-const PORT = process.env.PORT || 8000;
+// Taking arguments from command line
+const args = process.argv.splice(2);
+
+const PORT = args[0]?.split("=")[1] || process.env.PORT || 8000;
 
 //Routes
 app.use("/greet", greetRoutes);
