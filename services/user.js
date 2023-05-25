@@ -1,8 +1,13 @@
 import { connection } from "../config/database.js";
 
 export const getUsers = async () => {
-  const users = await connection.query("SELECT * FROM user");
-  return users;
+  try {
+    const users = await connection.query("SELECT * FROM user");
+    return users;
+  } catch (error) {
+    console.log("Error occured in user service in get users function", error)
+    throw error
+  }
 };
 
 export const createUser = async (name, role) => {
