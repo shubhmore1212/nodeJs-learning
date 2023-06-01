@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import greetRoutes from "./routes/public/greet.js";
 import userRoutes from "./routes/public/user.js";
 import { sequelize } from "./utils/db.js";
+import { errorHandler } from "./utils/errorHandler.js";
 
 dotenv.config();
 const app = express();
@@ -27,6 +28,8 @@ const PORT = args[0]?.split("=")[1] || process.env.PORT || 8000;
 //Routes
 app.use("/greet", greetRoutes);
 app.use("/user", userRoutes);
+
+app.use(errorHandler);
 
 sequelize
   .authenticate()
