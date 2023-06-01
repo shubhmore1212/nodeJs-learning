@@ -1,23 +1,27 @@
-import express from "express";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import bodyParser from "body-parser";
+import express from "express";
 
+import { errorHandler } from "./errors/errorHandler.js";
+import { initDB } from "./utils/dbInitialize.js";
 import greetRoutes from "./routes/public/greet.js";
 import userRoutes from "./routes/public/user.js";
-import { sequelize } from "./utils/db.js";
-import { errorHandler } from "./utils/errorHandler.js";
 
+// [TODO]:check this (not in top level?)
 dotenv.config();
 const app = express();
 
+//These IP's are not used at the moment
 const WHITELIST = ["http://localhost:9000", "http://localhost:8000"];
 
+//CORS not applicable right now
 app.use(
   cors({
     origin: WHITELIST,
   })
 );
+
 app.use(bodyParser.json({ limit: "30mb", extended: true }));
 
 // Taking arguments from command line
@@ -31,14 +35,11 @@ app.use("/user", userRoutes);
 
 app.use(errorHandler);
 
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database connection has been established successfully");
+initDB()
+  .then((res) => {
+    console.log(res);
     app.listen(PORT, () => {
       console.log(`Listening to port ${PORT}`);
     });
   })
-  .catch((error) => {
-    console.log(`Database connection: ${error}`);
-  });
+  .catch((error) => console.log(`Database connection: ${error}`));
