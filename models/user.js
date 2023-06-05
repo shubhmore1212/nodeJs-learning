@@ -18,6 +18,15 @@ export const User = sequelize.define("users", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  email: {
+    type: DataTypes.STRING,
+    required: true,
+  },
+  password: {
+    type: DataTypes.STRING,
+    required: true,
+    min: 5,
+  },
 });
 
 sequelize.sync();

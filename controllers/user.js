@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import AppError from "../errors/appError.js";
 import { addUser, getUsers, removeUser, updateUser } from "../services/user.js";
 import { response } from "../utils/responseUtil.js";
@@ -12,8 +13,14 @@ export const getAllUsers = tryCatch(async (req, res) => {
 });
 
 export const createUser = tryCatch(async (req, res) => {
-  const { name, role } = req.body;
-  const result = await addUser({ name, role });
+  const { name, role, email, password } = req.body;
+
+  const salt = await bcrypt.genSalt();
+  const passwordHash = await bcrypt.hash(password, salt);
+
+  const result = await addUser({ name, role, email, passwordHash });
+  delete result["passwordHash"];
+
   return response(res, 200, result);
 });
 
