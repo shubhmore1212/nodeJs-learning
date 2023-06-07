@@ -1,30 +1,24 @@
-import AppError from "../errors/appError.js";
+import Joi from "joi";
 
-export const validateParams =
-  (requiredBody, requiredParams) => (req, res, next) => {
-    const bodyParams = checkParams(req.body, requiredBody);
-    const paramsQuery = checkParams(req.query, requiredParams);
+const userSchemaObj = {
+  name: Joi.string().trim().required(),
+  role: Joi.string().trim().required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).max(10).required(),
+};
 
-    if (bodyParams.length > 0 || paramsQuery.length > 0) {
-      throw new AppError(
-        `Missing required parameter(s): ${bodyParams.join(
-          ", "
-        )} ${paramsQuery.join(", ")}`,
-        422
-      );
-    }
+export const loginSchema = Joi.object({
+  email: Joi.string().email().required(),
+  password: Joi.string().min(3).max(10).required(),
+});
 
-    next();
-  };
+export const registerUserSchema = Joi.object(userSchemaObj);
 
-const checkParams = (request, requiredParameters) => {
-  const parameters = [];
+export const updateUserSchema = Joi.object({
+  ...userSchemaObj,
+  id: Joi.number().required(),
+});
 
-  requiredParameters.forEach((param) => {
-    if (!request[param]) {
-      parameters.push(param);
-    }
-  });
-
-  return parameters;
+export const checkForError = (error) => {
+  if (error) throw error;
 };

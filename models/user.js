@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 
-import { getDBConnection } from "../utils/db.js";
+import { getDBConnection } from "../utils/dbInitialize.js";
 
 const sequelize = getDBConnection();
 
