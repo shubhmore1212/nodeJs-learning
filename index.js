@@ -5,6 +5,8 @@ import express from "express";
 
 import { errorHandler } from "./errors/errorHandler.js";
 import { initDB } from "./utils/dbInitialize.js";
+
+import authRoutes from "./routes/public/auth.js";
 import greetRoutes from "./routes/public/greet.js";
 import userRoutes from "./routes/public/user.js";
 
@@ -30,6 +32,7 @@ const args = process.argv.splice(2);
 const PORT = args[0]?.split("=")[1] || process.env.PORT || 8000;
 
 //Routes
+app.use("/auth", authRoutes);
 app.use("/greet", greetRoutes);
 app.use("/user", userRoutes);
 

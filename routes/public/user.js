@@ -6,17 +6,13 @@ import {
   getAllUsers,
   modifyUser,
 } from "../../controllers/user.js";
-import { validateParams } from "../../utils/validateParamMiddleware.js";
+import { verifyToken } from "../../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/", getAllUsers);
-router.post("/create-user", validateParams(["name", "role"], []), createUser);
-router.put(
-  "/update-user",
-  validateParams(["id", "name", "role"], []),
-  modifyUser
-);
-router.delete("/delete-user", validateParams([], ["id"]), deleteUser);
+router.get("/", verifyToken, getAllUsers);
+router.post("/create-user", createUser);
+router.put("/update-user", verifyToken, modifyUser);
+router.delete("/delete-user", verifyToken, deleteUser);
 
 export default router;

@@ -5,7 +5,10 @@ export const getUsers = async () => {
 };
 
 export const addUser = async (payload) => {
-  const result = await User.create(payload);
+  const result = await User.create({
+    ...payload,
+    password: payload.passwordHash,
+  });
 
   return {
     id: result.dataValues.id,
