@@ -6,7 +6,7 @@ export const verifyToken = async (req, res, next) => {
     let token = req.header("Authorization");
 
     if (!token) {
-      throw new AppError("Access Denied", 403);
+      throw new AppError("Access Denied", 401);
     }
 
     const verified = jwt.verify(token, process.env.JWT_SECRET);
@@ -17,6 +17,6 @@ export const verifyToken = async (req, res, next) => {
     if (error.name === "JsonWebTokenError")
       return res.status(400).json({ error: "Invalid Token" });
 
-    res.status(500).json({ error: error.message });
+    res.status(error.statusCode).json({ error: error.message });
   }
 };

@@ -1,7 +1,6 @@
 import { response } from "../utils/responseUtil.js";
 
 export const errorHandler = (error, req, res, next) => {
-  console.log("Error", error);
   if (error.name === "ValidationError") {
     return response(res, 422, {
       type: "Validation Error",
